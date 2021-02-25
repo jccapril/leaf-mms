@@ -31,11 +31,25 @@
 </template>
 
 <script>
+
 import testApi from "@/api/test"
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  created(){
+    this.fetchData()
+  },
+  methods: {
+    fetchData: function(){
+      testApi.getList().then(response => {
+        console.log('get3', response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>
