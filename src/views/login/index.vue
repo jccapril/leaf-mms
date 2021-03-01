@@ -53,7 +53,15 @@ export default {
                   const respUser = response.data
                   if(respUser.code == 2000) {
                     console.log(respUser)
+                    localStorage.setItem('leaf-msm-user',JSON.stringify(respUser.data))
+                    localStorage.setItem('leaf-msm-token',resp.data.token)
+                    // 前往首页
                     this.$router.push('/')
+                  }else {
+                    this.$message({
+                      message: respUser.msg,
+                      type: 'warning'
+                    })
                   }
                   
                 })
