@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import {login,getUserInfo} from "@/api/login"
+
 export default {
   data() {
     return {
@@ -40,8 +42,33 @@ export default {
     };
   },
   methods: {
-      submitForm: function(formData){
-
+      submitForm: function(formName){
+        this.$refs[formName].validate(valid => {
+          if(valid) {
+            login(this.form.username,this.form.password).then(response => {
+              const resp = response.data
+              console.log(resp.code, resp.msg,response.data)
+              if(resp.code == 2000) {
+                getUserInfo(resp.data.token).then(response => {
+                  const respUser = response.data
+                  if(respUser.code == 2000) {
+                    console.log(respUser)
+                    this.$router.push('/')
+                  }
+                  
+                })
+              }else {
+                this.$message({
+                  message: resp.msg,
+                  type: 'warning'
+                })
+              }
+            })
+          }else {
+            console.log('submit error')
+          }
+          
+        })
       }
   }
 };
